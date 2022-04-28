@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"
+       default-lazy-init="true">
+
+
+
+    <bean id="test-interceptor1" class="com.threelambda.methodintercept.TestMethodInterceptor">
+        <property name="order" value="111"/>
+    </bean>
+    <bean id="test-pointcut1" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype" >
+        <property name="patterns">
+            <list>
+                <value>com.threelambda.methodintercept.*.*</value>
+            </list>
+        </property>
+    </bean>
+
+    <aop:config proxy-target-class="true" >
+        <aop:advisor advice-ref="test-interceptor1" pointcut-ref="test-pointcut1" order="1" />
+    </aop:config>
+
+    <bean id="test-interceptor2" class="com.threelambda.methodintercept.TestMethodInterceptor">
+        <property name="order" value="222"/>
+    </bean>
+    <bean id="test-pointcut2" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype" >
+        <property name="patterns">
+            <list>
+                <value>com.threelambda.methodintercept.FoolServiceImpl.*</value>
+            </list>
+        </property>
+    </bean>
+
+    <aop:config proxy-target-class="true" >
+        <aop:advisor advice-ref="test-interceptor2" pointcut-ref="test-pointcut2" order="2" />
+    </aop:config>
+
+
+    <bean id="test-interceptor3" class="com.threelambda.methodintercept.TestMethodInterceptor">
+        <property name="name" value="333"/>
+    </bean>
+
+
+</beans>
